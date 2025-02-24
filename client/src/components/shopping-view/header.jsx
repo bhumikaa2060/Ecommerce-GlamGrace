@@ -6,6 +6,8 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet"; // Ensure both 
 import { Button } from "../ui/button";
 import { useSelector } from "react-redux";
 import { shoppingViewHeaderMenuItems } from "@/config";
+import { DropdownMenu, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { Avatar } from "@radix-ui/react-avatar";
 
 function MenuItems(){
     return (
@@ -21,7 +23,26 @@ function MenuItems(){
 
 
 function HeaderRightContent(){
-    return <div>
+    return <div className="flex lg:items-center lg:flex-row flex-col gap-4">
+        <Button  variant="outline"
+          size="icon">
+        <ShoppingCart className="w-6 h-6"  />
+        <span className="sr-only">User Cart</span>
+        </Button>
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Avatar className="bg-black">
+                    <AvatarFallback className="bg-black text-white font-extrabold">
+                        AB
+            
+            </AvatarFallback>
+                </Avatar>
+                
+
+            </DropdownMenuTrigger>
+        </DropdownMenu>
+        
+
 
     </div>
 }
@@ -63,11 +84,15 @@ function ShoppingHeader() {
                 </div>
 
                 {/* Placeholder for authenticated state */}
-                {isAuthenticated ? <div></div> : null}
+                {isAuthenticated ? (<div>
+                    <HeaderRightContent/>
+                </div> ): null}
             </div>
         </header>
     );
 }
 
 export default ShoppingHeader;
+
+
 
