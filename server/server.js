@@ -53,6 +53,9 @@ const cors = require("cors");
 const authRouter = require('./routes/auth/auth-routes');
 const adminProductsRouter = require('./routes/admin/products-routes');
 const shopProductsRouter = require('./routes/shop/products-routes')
+const shopAddresRouter = require('./routes/shop/address-routes')
+
+
 mongoose
     .connect('mongodb+srv://bhumika1:MCMC2ug4JfN23ok9@cluster.gvyn5.mongodb.net/')
     .then(() => console.log('MongoDb connected'))
@@ -78,8 +81,9 @@ app.use(
 
 app.use(cookieParser());
 app.use(express.json());
-app.use('/api/auth', authRouter);
-app.use('/api/admin/products', adminProductsRouter);
-app.use('/api/shop/products', shopProductsRouter)
+app.use("/api/auth", authRouter);
+app.use("/api/admin/products", adminProductsRouter);
+app.use("/api/shop/products", shopProductsRouter);
+app.use("/api/shop/address", shopAddresRouter);
 
 app.listen(PORT, () => console.log(`Server is now running on port ${PORT}`));
