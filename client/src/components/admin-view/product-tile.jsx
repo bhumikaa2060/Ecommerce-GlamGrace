@@ -51,3 +51,72 @@
 // }
 
 // export default AdminProductTile;
+
+
+
+
+
+
+
+
+
+
+import { Button } from "../ui/button";
+import { Card, CardContent, CardFooter } from "../ui/card";
+
+function AdminProductTile({ 
+  product, 
+  setFormData, 
+  setOpenCreateProductsDialog, 
+  setCurrentEditedId, 
+  handleDelete 
+}) {
+  // Destructure product for cleaner code
+  const { _id, image, title, price, salePrice } = product || {};
+
+  return (
+    <Card className="w-full max-w-sm mx-auto">
+      <div>
+        {/* Product Image */}
+        <div className="relative">
+          <img
+            src={image || "/placeholder.jpg"} // Fallback if no image
+            alt={title || "Product image"}
+            className="w-full h-[300px] object-cover rounded-t-lg"
+          />
+        </div>
+
+        <CardContent>
+          {/* Product Title */}
+          <h2 className="text-xl font-bold mb-2 mt-2">{title || "No Title"}</h2>
+
+          {/* Pricing Section */}
+          <div className="flex justify-between items-center mb-2">
+            <span className={`${salePrice > 0 ? "line-through" : ""} text-lg font-semibold text-primary`}>
+              ${price ?? "N/A"}
+            </span>
+            {salePrice > 0 && <span className="text-lg font-bold">${salePrice}</span>}
+          </div>
+        </CardContent>
+
+        {/* Actions (Edit & Delete Buttons) */}
+        <CardFooter className="flex justify-between items-center">
+          <Button
+            onClick={() => {
+              setOpenCreateProductsDialog?.(true);
+              setCurrentEditedId?.(_id);
+              setFormData?.(product);
+            }}
+          >
+            Edit
+          </Button>
+          <Button onClick={() => handleDelete?.(_id)} variant="destructive">
+            Delete
+          </Button>
+        </CardFooter>
+      </div>
+    </Card>
+  );
+}
+
+export default AdminProductTile;
