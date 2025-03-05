@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 // const express = require('express');
 // const mongoose = require('mongoose');
 // const cookieParser = require("cookie-parser");
@@ -56,6 +63,8 @@ const shopProductsRouter = require('./routes/shop/products-routes')
 const shopAddresRouter = require('./routes/shop/address-routes')
 
 
+
+
 mongoose
     .connect('mongodb+srv://bhumika1:MCMC2ug4JfN23ok9@cluster.gvyn5.mongodb.net/')
     .then(() => console.log('MongoDb connected'))
@@ -87,3 +96,12 @@ app.use("/api/shop/products", shopProductsRouter);
 app.use("/api/shop/address", shopAddresRouter);
 
 app.listen(PORT, () => console.log(`Server is now running on port ${PORT}`));
+
+app.get("/", (req, res) => {
+    res.send("Server is running!");
+});
+
+
+
+
+

@@ -63,6 +63,54 @@
 
 
 
+// import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+// import axios from "axios"; // Added missing import
+
+// const initialState = {
+//   isLoading: false,
+//   productList: [],
+// };
+
+// export const fetchAllFilteredProducts = createAsyncThunk(
+//   "/products/fetchAllProducts",
+//   async () => {
+//     try {
+//       const result = await axios.get("http://localhost:5000/api/shop/products/get");
+//       return result?.data;
+//     } catch (error) {
+//       console.error("Error fetching products:", error);
+//       throw error;
+//     }
+//   }
+// );
+
+// const shoppingProductSlice = createSlice({
+//   name: "shoppingProducts",
+//   initialState,
+//   reducers: {},
+//   extraReducers: (builder) => {
+//     builder
+//       .addCase(fetchAllFilteredProducts.pending, (state) => {
+//         state.isLoading = true;
+//       })
+//       .addCase(fetchAllFilteredProducts.fulfilled, (state, action) => {
+//         console.log(action.payload, "action.payload");
+//         state.isLoading = false;
+//         state.productList = action.payload.data;
+//       })
+//       .addCase(fetchAllFilteredProducts.rejected, (state, action) => {
+//         console.error("Fetch products failed:", action.error);
+//         state.isLoading = false;
+//         state.productList = [];
+//       });
+//   },
+// });
+
+// export default shoppingProductSlice.reducer;
+
+
+
+
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios"; // Added missing import
 
@@ -75,7 +123,7 @@ export const fetchAllFilteredProducts = createAsyncThunk(
   "/products/fetchAllProducts",
   async () => {
     try {
-      const result = await axios.get("http://localhost:5000/api/shop/products/get");
+      const result = await axios.get("http://localhost:5000/api/products/get");
       return result?.data;
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -94,9 +142,9 @@ const shoppingProductSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchAllFilteredProducts.fulfilled, (state, action) => {
-        console.log(action.payload);
+        console.log(action.payload, "action.payload");
         state.isLoading = false;
-        state.productList = action.payload;
+        state.productList = action.payload.data;
       })
       .addCase(fetchAllFilteredProducts.rejected, (state, action) => {
         console.error("Fetch products failed:", action.error);
