@@ -211,15 +211,25 @@ const { imageUploadUtil } = require("../../helpers/cloudinary");
 const Product = require("../../models/Product");
 
 const handleImageUpload = async (req, res) => {
+  
   try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "No file uploaded"
+      });
+    }
     const b64 = Buffer.from(req.file.buffer).toString("base64");
-    const url = "data:" + req.file.mimetype + ";base64," + b64;
-    const result = await imageUploadUtil(url);
+    const dataUri = `data:${req.file.mimetype};base64,${b64}`;
+    const result = await imageUploadUtil(dataUri);
 
     res.json({ success: true, result });
   } catch (error) {
-    console.error("Image Upload Error:", error.message);
-    res.status(500).json({ success: false, message: "Error occurred", error: error.message });
+    console.log("Image upload error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error occured during image upload",
+    });
   }
 };
 
@@ -316,10 +326,3 @@ module.exports = {
   editProduct,
   deleteProduct,
 };
-
-
-
-
-
-
-

@@ -198,14 +198,14 @@
 
 
 
-import { Link } from "react-router-dom";
-import { HousePlug, Menu, ShoppingCart } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { Link } from "react-router-dom"; 
+import { HousePlug, Menu, ShoppingCart  } from "lucide-react"; // Make sure Menu is imported
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet"; // Ensure both are imported correctly
 import { Button } from "../ui/button";
 import { useSelector } from "react-redux";
 import { shoppingViewHeaderMenuItems } from "@/config";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { DropdownMenu, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
 
 function MenuItems() {
   // Corrected menu items to use the imported configuration

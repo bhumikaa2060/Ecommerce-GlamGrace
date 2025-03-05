@@ -62,10 +62,17 @@ function ShoppingListing() {
 
           {/* Product listing would go here */}
 
-          {
+          {/* {
   productList && productList.length > 0 ?
   productList.map(productItem => <ShoppingProductTile product={productItem} />) : null
+} */}
+{
+  productList && productList.length > 0 ?
+  productList.map(productItem => (
+    <ShoppingProductTile key={productItem.id} product={productItem} />
+  )) : null
 }
+
 
         </div>
       </div>

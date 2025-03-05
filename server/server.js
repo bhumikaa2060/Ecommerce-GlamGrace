@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 // const express = require('express');
 // const mongoose = require('mongoose');
 // const cookieParser = require("cookie-parser");
@@ -96,12 +89,3 @@ app.use("/api/shop/products", shopProductsRouter);
 app.use("/api/shop/address", shopAddresRouter);
 
 app.listen(PORT, () => console.log(`Server is now running on port ${PORT}`));
-
-app.get("/", (req, res) => {
-    res.send("Server is running!");
-});
-
-
-
-
-
