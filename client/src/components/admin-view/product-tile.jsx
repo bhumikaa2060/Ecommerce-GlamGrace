@@ -93,7 +93,7 @@ function AdminProductTile({
           {/* Pricing Section */}
           <div className="flex justify-between items-center mb-2">
             <span className={`${salePrice > 0 ? "line-through" : ""} text-lg font-semibold text-primary`}>
-              ${price ?? "N/A"}
+              Rs. {price ?? "N/A"}
             </span>
             {salePrice > 0 && <span className="text-lg font-bold">${salePrice}</span>}
           </div>

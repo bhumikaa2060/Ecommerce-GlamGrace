@@ -106,6 +106,7 @@
 
 
 import { Routes, Route } from "react-router-dom";
+import {  useSelector } from "react-redux";
 import AuthLayout from "./components/auth/layout";
 import AuthLogin from "./pages/auth/login";
 import AuthRegister from "./pages/auth/register";
@@ -126,11 +127,14 @@ import CheckAuth from "./components/common/check-auth";
 import UnauthPage from "./pages/unauth-page";
 
 function App() {
-  const isAuthenticated = true;
-  const user = {
-    name: "Alisha",
-    role: "admin",
-  };
+  // const isAuthenticated = true;
+  // const user = {
+  //   name: "Alisha",
+  //   role: "admin",
+    
+  // };
+  const { isAuthenticated, user } = useSelector(state => state.auth);
+
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
