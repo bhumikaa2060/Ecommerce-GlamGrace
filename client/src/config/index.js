@@ -61,9 +61,10 @@ export const addProductFormElements = [
     name: "category",
     componentType: "select",
     options: [
-      { id: "casual", label: "Casual Wear" },
-      { id: "party", label: "Party Wear " },
-      { id: "wedding", label: "Wedding Saris" },
+      { id: "casualwears", label: "Casual Wears" },
+      { id: "partywears", label: "Party Wears" },
+      { id: "weddingwears", label: "Wedding Wears" },
+      
     ],
   },
   {
@@ -125,6 +126,19 @@ export const shoppingViewHeaderMenuItems = [
   
 ];
 
+export const categoryOptionsMap = {
+  'casualwears': "Casual Wears",
+  'partywears': 'Party Wears',
+  'weddingwears': 'Wedding Wears'
+}
+
+
+export const brandOptionsMap = {
+  'sabyasachi': "Sabyasachi",
+  'biba': 'Biba',
+  'manishMalhotra': 'Manish Malhotra'
+}
+
 export const filterOptions = {
   brand: [
     { id: "sabyasachi", label: "Sabyasachi" },
@@ -132,9 +146,9 @@ export const filterOptions = {
     { id: "manishMalhotra", label: "Manish Malhotra" },
   ],
   category: [
-    { id: "casual", label: "Casual Wear " },
-    { id: "party", label: "Party Wear " },
-    { id: "wedding", label: "Wedding Saris" },
+    { id: "casualwears", label: "Casual Wears" },
+    { id: "partywears", label: "Party Wears" },
+    { id: "weddingwears", label: "Wedding Wears" },
   ],
 };
 

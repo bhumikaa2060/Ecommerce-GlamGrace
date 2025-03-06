@@ -44,8 +44,7 @@
 
 
 
-
-
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require("cookie-parser");
@@ -54,8 +53,6 @@ const authRouter = require('./routes/auth/auth-routes');
 const adminProductsRouter = require('./routes/admin/products-routes');
 const shopProductsRouter = require('./routes/shop/products-routes')
 const shopAddresRouter = require('./routes/shop/address-routes')
-
-
 
 
 mongoose
