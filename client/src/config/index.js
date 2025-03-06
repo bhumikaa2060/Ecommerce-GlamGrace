@@ -174,6 +174,7 @@ export const addressFormControls = [
     type: "text",
     placeholder: "Enter your phone number",
   },
+  
   {
     label: "Notes",
     name: "notes",
