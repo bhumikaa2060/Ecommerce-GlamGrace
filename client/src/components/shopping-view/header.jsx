@@ -318,6 +318,8 @@ import {
   Avatar, 
   AvatarFallback 
 } from "@/components/ui/avatar";
+import UserCartWrapper from "./cart-wrapper";
+import { useState } from "react";
 
 function MenuItems() {
   return (
@@ -336,18 +338,24 @@ function MenuItems() {
 }
 
 function HeaderRightContent() {
+
+  const [openCartSheet, setOpenCartSheet] = useState(false);
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
-      <Button variant="outline" size="icon">
-        <ShoppingCart className="w-6 h-6" />
-        <span className="sr-only">User Cart</span>
-      </Button>
+      <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
+        <Button variant="outline" size="icon">
+          <ShoppingCart className="w-6 h-6" />
+          <span className="sr-only">User Cart</span>
+        </Button>
+        <UserCartWrapper />
+      </Sheet>
+      
       
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar className="w-10 h-10 bg-black flex items-center justify-center rounded-full">
             <AvatarFallback className="text-white font-extrabold">
-              AB
+              GG
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
