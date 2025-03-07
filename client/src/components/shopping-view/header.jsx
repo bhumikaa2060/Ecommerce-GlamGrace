@@ -319,7 +319,8 @@ import {
   AvatarFallback 
 } from "@/components/ui/avatar";
 import UserCartWrapper from "./cart-wrapper";
-import { useState } from "react";
+import {  useState } from "react";
+
 
 function MenuItems() {
   return (
@@ -338,16 +339,15 @@ function MenuItems() {
 }
 
 function HeaderRightContent() {
-
   const [openCartSheet, setOpenCartSheet] = useState(false);
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
       <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
-        <Button variant="outline" size="icon">
-          <ShoppingCart className="w-6 h-6" />
-          <span className="sr-only">User Cart</span>
-        </Button>
-        <UserCartWrapper />
+      <Button onClick={() => setOpenCartSheet(true)} variant="outline" size="icon">
+        <ShoppingCart className="w-6 h-6" />
+        <span className="sr-only">User Cart</span>
+      </Button>
+      <UserCartWrapper />
       </Sheet>
       
       
@@ -390,7 +390,7 @@ function ShoppingHeader() {
               <span className="sr-only">Toggle header menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-full max-w-xs">
+          <SheetContent side="left" className="w-full max-w-xs bg-white">
             <MenuItems />
           </SheetContent>
         </Sheet>

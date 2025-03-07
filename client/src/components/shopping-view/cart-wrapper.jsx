@@ -1,6 +1,6 @@
 
 
-function UserCartWrapper({ cartItems, setOpenCartSheet }) {
+function UserCartWrapper() {
     return(
         <div>UserCartWrapper</div>
     )
