@@ -77,7 +77,7 @@ import {
     return (
       <Fragment>
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetContent side="left" className="w-64">
+          <SheetContent side="left" className="w-64 ">
             <div className="flex flex-col h-full">
               <SheetHeader className="border-b">
                 <SheetTitle className="flex gap-2 mt-5 mb-5">
@@ -89,7 +89,7 @@ import {
             </div>
           </SheetContent>
         </Sheet>
-        <aside className="hidden w-64 flex-col border-r bg-background p-6 lg:flex">
+        <aside className="hidden w-64 flex-col border-r bg-background p-6 lg:flex ">
           <div
             onClick={() => navigate("/admin/dashboard")}
             className="flex cursor-pointer items-center gap-2"

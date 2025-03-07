@@ -34,8 +34,9 @@ import {
   Avatar, 
   AvatarFallback 
 } from "@/components/ui/avatar";
-import { DropdownMenuLabel, DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
-import { logoutUser } from "@/store/auth-slice";
+import UserCartWrapper from "./cart-wrapper";
+import {  useState } from "react";
+
 
 function MenuItems() {
 
@@ -56,35 +57,23 @@ function MenuItems() {
 }
 
 function HeaderRightContent() {
-
-  const { user} = useSelector(state=>state.auth)
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-
-
-  function handleLogout(){
-    dispatch(logoutUser());    //but why this logout not working 5:26:19
-
-  }
-
-  
-
-
-
+  const [openCartSheet, setOpenCartSheet] = useState(false);
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
-      <Button variant="outline" size="icon">
+      <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
+      <Button onClick={() => setOpenCartSheet(true)} variant="outline" size="icon">
         <ShoppingCart className="w-6 h-6" />
         <span className="sr-only">User Cart</span>
       </Button>
+      <UserCartWrapper />
+      </Sheet>
+      
       
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Avatar className="bg-black">
-            <AvatarFallback className="bg-black text-white font-extrabold">
-              {user?.userName[0].toUpperCase()}
-
+          <Avatar className="w-10 h-10 bg-black flex items-center justify-center rounded-full">
+            <AvatarFallback className="text-white font-extrabold">
+              GG
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
@@ -133,7 +122,7 @@ function ShoppingHeader() {
               <span className="sr-only">Toggle header menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-full max-w-xs">
+          <SheetContent side="left" className="w-full max-w-xs bg-white">
             <MenuItems />
             <HeaderRightContent/>
           </SheetContent>
