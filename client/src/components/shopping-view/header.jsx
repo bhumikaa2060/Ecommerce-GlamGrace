@@ -38,6 +38,8 @@ import { DropdownMenuLabel, DropdownMenuSeparator } from "@radix-ui/react-dropdo
 import { logoutUser } from "@/store/auth-slice";
 
 function MenuItems() {
+
+
   return (
     <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row">
       {shoppingViewHeaderMenuItems.map(menuItem => (
@@ -65,6 +67,8 @@ function HeaderRightContent() {
     dispatch(logoutUser());    //but why this logout not working 5:26:19
 
   }
+
+  
 
 
 
@@ -158,12 +162,6 @@ function ShoppingHeader() {
 }
 
 export default ShoppingHeader;
-
-
-
-
-
-
 
 
 
