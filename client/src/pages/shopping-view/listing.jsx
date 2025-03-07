@@ -71,6 +71,10 @@ function ShoppingListing() {
     dispatch(fetchProductDetails(getCurrentProductId));
   }
 
+  function handleAddtoCart(getCurrentProductId){
+    console.log(getCurrentProductId)
+  }
+
   useEffect(() => {
     setSort("price-lowtohigh");
     setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
@@ -93,7 +97,7 @@ function ShoppingListing() {
   }, [productDetails]);
 
 
- console.log(productDetails, "productDetails")
+
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6">
@@ -136,7 +140,11 @@ function ShoppingListing() {
 {
   productList && productList.length > 0 ?
   productList.map(productItem => (
-    <ShoppingProductTile handleGetProductDetails={handleGetProductDetails} key={productItem._id} product={productItem} />
+    <ShoppingProductTile handleGetProductDetails={handleGetProductDetails} key={productItem._id} product={productItem}
+    handleAddtoCart={handleAddtoCart}
+    
+    
+    />
   )) : null
 }
 
