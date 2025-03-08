@@ -1,96 +1,68 @@
 
 
-// import { createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
+const initialState = {
+  isLoading: false,
+  searchResults: [],
+  error: null
+};
 
-// const initialState={
-//     isLoading :false,
-//     searchResults: []
-// }
-
-
-// export const getSearchResults = createAsyncThunk(
-//     "/order/getSearchResults",
-//     async (keyword) => {
-//       const response = await axios.get(
-//         `http://localhost:5000/api/shop/search/${keyword}`
-//       );
-  
-//       return response.data;
-//     }
-
-// );
-
-// const searchSlice = createSlice({
-//     name: 'searchSlice',
-//     initialState,
-//     reducers : {},
-//     extraReducers : (builder)=>{
-//         builder.addcase(getSearchResults .pending, (state)=>{
-//             state.isLoading = true
-//         })
-//         .addCase(getSearchResults.fulfilled, (state, action) => {
-//             state.isLoading = false;
-//             state.searchResults = action.payload.data;
-//           })
-//           .addCase(getSearchResults.rejected, (state) => {
-//             state.isLoading = false;
-//             state.searchResults = [];
-//           });
-//     }
-// })
-
-
-
-// export const { resetSearchResults } = searchSlice.actions;
-
-// export default searchSlice.reducer;
-
-
-
-
-
-
-
-
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import axios from 'axios'; // Added missing axios import
-
-const initialState={
-    isLoading :false,
-    searchResults: []
-}
-
+// Update to support both query params and URL params
 export const getSearchResults = createAsyncThunk(
-    "/order/getSearchResults",
-    async (keyword) => {
+  "/shop/getSearchResults",
+  async (keyword, { rejectWithValue }) => {
+    try {
       const response = await axios.get(
-        `http://localhost:5000/api/shop/search/${keyword}`
+        `http://localhost:5000/api/shop/search/${encodeURIComponent(keyword)}`
       );
-  
+      
       return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Error searching products"
+      );
     }
+  }
 );
 
 const searchSlice = createSlice({
-    name: 'searchSlice',
-    initialState,
-    reducers : {},
-    extraReducers : (builder)=>{
-        builder.addCase(getSearchResults.pending, (state)=>{
-            state.isLoading = true
-        })
-        .addCase(getSearchResults.fulfilled, (state, action) => {
-            state.isLoading = false;
-            state.searchResults = action.payload.data;
-        })
-        .addCase(getSearchResults.rejected, (state) => {
-            state.isLoading = false;
-            state.searchResults = [];
-        });
-    }
-})
+  name: "shopSearch",
+  initialState,
+  reducers: {
+    resetSearchResults: (state) => {
+      state.searchResults = [];
+      state.error = null;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getSearchResults.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getSearchResults.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.searchResults = action.payload.data;
+        state.error = null;
+      })
+      .addCase(getSearchResults.rejected, (state, action) => {
+        state.isLoading = false;
+        state.searchResults = [];
+        state.error = action.payload || "Failed to search products";
+      });
+  },
+});
 
 export const { resetSearchResults } = searchSlice.actions;
 
 export default searchSlice.reducer;
+
+
+
+
+
+
+
+

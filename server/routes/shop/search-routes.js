@@ -1,23 +1,17 @@
 
 
-// const express = require("express");
-
-// const { searchProducts } = require("../../controllers/shop/search-controller");
-
-// const router = express.Router();
-
-// router.get("/:keyword", searchProducts);
-
-// module.exports = router;
-
-
 
 const express = require("express");
-
 const { searchProducts } = require("../../controllers/shop/search-controller");
 
 const router = express.Router();
 
-router.get("/:keyword", searchProducts);
+// Support both query parameters and route parameters
+router.get("/", searchProducts);  // For /api/shop/search?keyword=value
+router.get("/:keyword", searchProducts);  // For /api/shop/search/value
 
 module.exports = router;
+
+
+
+
