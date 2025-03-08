@@ -1,6 +1,3 @@
-
-
-
 import ProductImageUpload from "@/components/admin-view/image-upload";
 import AdminProductTile from "@/components/admin-view/product-tile";
 import CommonForm from "@/components/common/form";
@@ -144,7 +141,11 @@ function AdminProducts() {
   useEffect(() => {
     dispatch(fetchAllProducts());
   }, [dispatch]);
-
+  useEffect(() => {
+    if (currentEditedId !== null && formData.image) {
+      setUploadedImageUrl(formData.image);
+    }
+  }, [currentEditedId, formData.image]);
   console.log(formData, "productList");
 
   return (

@@ -106,7 +106,7 @@ function HeaderRightContent() {
           </Avatar>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent side="right" className="w-56">
+          <DropdownMenuContent side="right" className="w-56">
           <DropdownMenuLabel>Logged in as {user?.userName}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => navigate('/shop/account')}>
@@ -119,7 +119,36 @@ function HeaderRightContent() {
             Logout
           </DropdownMenuItem>
         </DropdownMenuContent>
-      </DropdownMenu>
+      </DropdownMenu> 
+ 
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
   );
 }

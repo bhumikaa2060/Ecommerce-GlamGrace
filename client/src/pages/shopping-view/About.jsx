@@ -1,8 +1,5 @@
 
-// const About = () => {
-//   return <div>About Page</div>;
-// };
-// export default About;
+
 import { useState } from 'react';
 import sariImage from '../../assets/panjabi.jpg'; // Updated image path
 import { Button } from '@/components/ui/button'; // Reusing your Button component
