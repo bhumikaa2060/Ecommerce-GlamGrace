@@ -1,7 +1,7 @@
 
 function UnauthPage(){
     return(
-        <h>You dont have access to  view these page</h>
+        <h1>You dont have access to  view this page</h1>
     );
 }
 

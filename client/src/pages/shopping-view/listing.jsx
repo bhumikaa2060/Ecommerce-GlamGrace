@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import ShoppingProductTile from '@/components/shopping-view/product-tile';
 import ProductDetailsDialog from '@/components/shopping-view/product-details';
+import { addToCart } from '@/store/shop/cart-slice';
 
 function createSearchParamsHelper(filterParams) {
   const queryParams = [];
@@ -33,7 +34,8 @@ function createSearchParamsHelper(filterParams) {
 function ShoppingListing() {
 
   const dispatch = useDispatch();
-  const { productList, productDetails } = useSelector(state => state.shopProducts);  
+  const { productList, productDetails } = useSelector(state => state.shopProducts); 
+  const  {user}=useSelector(state=>state.auth)
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -72,7 +74,7 @@ function ShoppingListing() {
   }
 
   function handleAddtoCart(getCurrentProductId){
-    console.log(getCurrentProductId)
+    dispatch(addToCart({userId  : user?.id, productId: getCurrentProductId, quantity: 1})).then(data=> console.log(data))
   }
 
   useEffect(() => {

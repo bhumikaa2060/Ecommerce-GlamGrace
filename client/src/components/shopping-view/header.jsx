@@ -164,9 +164,6 @@ function ShoppingHeader() {
           <span className="font-bold">GlamGrace</span>
         </Link>
         
-        <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2">
-          <MenuItems />
-        </div>
         
         <Sheet>
           <SheetTrigger asChild>
@@ -182,6 +179,7 @@ function ShoppingHeader() {
         </Sheet>
 
         <div className="hidden lg:block">
+          <MenuItems />
         </div>
 
         {/* {
