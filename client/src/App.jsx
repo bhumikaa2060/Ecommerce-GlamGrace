@@ -131,27 +131,49 @@ import UnauthPage from "./pages/unauth-page";
 import SearchProducts from "./pages/shopping-view/search";
 import About from "./pages/shopping-view/about";
 import Contact from "./pages/shopping-view/contact";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { checkAuth } from "./store/auth-slice";
  
 function App() {
-  const isAuthenticated = true;
-  const user = {
-    name: "Alisha",
-    role: "admin", // Add role to avoid undefined behavior
-  };
- 
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
+  if (isLoading) return <Skeleton className="w-[800] bg-black h-[600px]" />;
+
+  console.log(isLoading, user);
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
-        {/*  Allow Unauthenticated Users to Access Auth Pages */}
-        
-        <Route path="/auth/*" element={<AuthLayout />}>
+        <Route
+          path="/"
+          element={
+            <CheckAuth
+              isAuthenticated={isAuthenticated}
+              user={user}
+            ></CheckAuth>
+          }
+        />
+        <Route
+          path="/auth"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AuthLayout />
+            </CheckAuth>
+          }
+        >
           <Route path="login" element={<AuthLogin />} />
           <Route path="register" element={<AuthRegister />} />
         </Route>
- 
-        {/* Protect Admin Routes */}
         <Route
-          path="/admin/*"
+          path="/admin"
           element={
             <CheckAuth isAuthenticated={isAuthenticated} user={user}>
               <AdminLayout />
@@ -163,10 +185,8 @@ function App() {
           <Route path="orders" element={<AdminOrders />} />
           <Route path="features" element={<AdminFeatures />} />
         </Route>
- 
-        {/*  Protect Shopping Routes */}
         <Route
-          path="/shop/*"
+          path="/shop"
           element={
             <CheckAuth isAuthenticated={isAuthenticated} user={user}>
               <ShoppingLayout />
@@ -177,18 +197,65 @@ function App() {
           <Route path="listing" element={<ShoppingListing />} />
           <Route path="checkout" element={<ShoppingCheckout />} />
           <Route path="account" element={<ShoppingAccount />} />
-          <Route path="search" element={<SearchProducts />} />
           <Route path="about" element={<About />} />
-          <Route path="contact" element={<Contact />} />         
+          <Route path="contact" element={<Contact />} /> 
+          <Route path="search" element={<SearchProducts />} />
         </Route>
- 
-        {/*  Unauthorized Page */}
         <Route path="/unauth-page" element={<UnauthPage />} />
- 
-        {/*  Catch-All Not Found */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
+    // <div className="flex flex-col overflow-hidden bg-white">
+    //   <Routes>
+    //     {/*  Allow Unauthenticated Users to Access Auth Pages */}
+        
+    //     <Route path="/auth/*" element={<AuthLayout />}>
+    //       <Route path="login" element={<AuthLogin />} />
+    //       <Route path="register" element={<AuthRegister />} />
+    //     </Route>
+ 
+    //     {/* Protect Admin Routes */}
+    //     <Route
+    //       path="/admin/*"
+    //       element={
+    //         <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+    //           <AdminLayout />
+    //         </CheckAuth>
+    //       }
+    //     >
+    //       <Route path="dashboard" element={<AdminDashboard />} />
+    //       <Route path="products" element={<AdminProducts />} />
+    //       <Route path="orders" element={<AdminOrders />} />
+    //       <Route path="features" element={<AdminFeatures />} />
+    //     </Route>
+ 
+    //     {/*  Protect Shopping Routes */}
+    //     <Route
+    //       path="/shop/*"
+    //       element={
+    //         <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+    //           <ShoppingLayout />
+    //         </CheckAuth>
+    //       }
+    //     >
+    //       <Route path="home" element={<ShoppingHome />} />
+    //       <Route path="listing" element={<ShoppingListing />} />
+    //       <Route path="checkout" element={<ShoppingCheckout />} />
+    //       <Route path="account" element={<ShoppingAccount />} />
+    //<Route path="about" element={<About />} />
+    
+    //       <Route path="about" element={<About />} />
+    //       <Route path="search" element={<SearchProducts />} />
+    //       <Route path="contact" element={<Contact />} />         
+    //     </Route>
+ 
+    //     {/*  Unauthorized Page */}
+    //     <Route path="/unauth-page" element={<UnauthPage />} />
+ 
+    //     {/*  Catch-All Not Found */}
+    //     <Route path="*" element={<NotFound />} />
+    //   </Routes>
+    // </div>
   );
 }
  

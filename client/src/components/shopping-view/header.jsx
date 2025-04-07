@@ -2,9 +2,12 @@
 
 import { Link, useNavigate } from "react-router-dom";
 import { HousePlug, Menu, ShoppingCart, UserRoundCog, LogOut } from "lucide-react";
+import { logoutUser } from "@/store/auth-slice";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { fetchCartItems } from "@/store/shop/cart-slice";
 import { shoppingViewHeaderMenuItems } from "@/config";
 import {
   DropdownMenu,
@@ -19,7 +22,7 @@ import {
   AvatarFallback
 } from "@/components/ui/avatar";
 import UserCartWrapper from "./cart-wrapper";
-import { useState } from "react";
+
 
 function MenuItems() {
   return (
@@ -39,14 +42,23 @@ function MenuItems() {
 
 function HeaderRightContent() {
   const [openCartSheet, setOpenCartSheet] = useState(false);
+  
+  const { cartItems } = useSelector((state) => state.shopCart);
   const { user } = useSelector(state => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   function handleLogout() {
     dispatch(logoutUser());
-    navigate('/login'); // Navigate to login page after logout
+    navigate('/auth/login'); // Navigate to login page after logout
   }
+
+  useEffect(() => {
+    dispatch(fetchCartItems(user?.id));
+  }, [dispatch]);
+
+  console.log(cartItems, "glamgrace");
+  
 
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
@@ -64,12 +76,7 @@ function HeaderRightContent() {
       </Sheet>  */}
 
 
-
-
-
-
-
-<Sheet open={openCartSheet} onOpenChange={setOpenCartSheet}>
+{/* <Sheet open={openCartSheet} onOpenChange={setOpenCartSheet}>
   <SheetTrigger asChild>
     <Button variant="outline" size="icon">
       <ShoppingCart className="w-6 h-6" />
@@ -81,20 +88,51 @@ function HeaderRightContent() {
       <UserCartWrapper />
     </div>
   </SheetContent>
-</Sheet>  
+</Sheet>   */}
+{/*  
+<Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
+        <Button
+          onClick={() => setOpenCartSheet(true)}
+          variant="outline"
+          size="icon"
+          className="relative"
+        >
+          <ShoppingCart className="w-6 h-6" />
+          <span className="absolute top-[-5px] right-[2px] font-bold text-sm">
+            {cartItems?.items?.length || 0}
+          </span>
+          <span className="sr-only">User cart</span>
+        </Button>
+        <UserCartWrapper
+          setOpenCartSheet={setOpenCartSheet}
+          cartItems={
+            cartItems && cartItems.items && cartItems.items.length > 0
+              ? cartItems.items
+              : []
+          }
+        />
+      </Sheet> */}
 
-
-
-
-
-
-
-
-
-
-
-
-
+<Sheet open={openCartSheet} onOpenChange={setOpenCartSheet}>
+  <SheetTrigger asChild>
+    <Button
+      onClick={() => setOpenCartSheet(true)}
+      variant="outline"
+      size="icon"
+      className="relative"
+    >
+      <ShoppingCart className="w-6 h-6" />
+      <span className="absolute top-[-5px] right-[2px] font-bold text-sm">
+        {cartItems?.items?.length || 0}
+      </span>
+      <span className="sr-only">User cart</span>
+    </Button>
+  </SheetTrigger>
+  <UserCartWrapper
+    setOpenCartSheet={setOpenCartSheet}
+    cartItems={cartItems?.items || []}
+  />
+</Sheet>
 
       
       <DropdownMenu>
@@ -121,31 +159,6 @@ function HeaderRightContent() {
         </DropdownMenuContent>
       </DropdownMenu> 
  
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

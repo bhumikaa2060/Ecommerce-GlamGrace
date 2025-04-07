@@ -17,7 +17,7 @@ function ShoppingProductTile({
             <img 
             src={product?.image}
             alt={product?.title}
-            className="w-full h-[300px] object-cover rounded-t-lg"    
+            className="w-full h-[500px] object-cover rounded-t-lg"    
             />
 
             {
