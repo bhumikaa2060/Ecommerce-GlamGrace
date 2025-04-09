@@ -1,5 +1,4 @@
 
-
 import { Link, useNavigate } from "react-router-dom";
 import { HousePlug, Menu, ShoppingCart, UserRoundCog, LogOut } from "lucide-react";
 import { logoutUser } from "@/store/auth-slice";
@@ -63,33 +62,8 @@ function HeaderRightContent() {
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
  
-       {/* <Sheet open={openCartSheet} onOpenChange={setOpenCartSheet}>
-        <SheetTrigger asChild>
-          <Button onClick={() => setOpenCartSheet(true)} variant="outline" size="icon">
-            <ShoppingCart className="w-6 h-6" />
-            <span className="sr-only">User Cart</span>
-          </Button>
-        </SheetTrigger>
-        <SheetContent>
-          <UserCartWrapper />
-        </SheetContent>
-      </Sheet>  */}
+       
 
-
-{/* <Sheet open={openCartSheet} onOpenChange={setOpenCartSheet}>
-  <SheetTrigger asChild>
-    <Button variant="outline" size="icon">
-      <ShoppingCart className="w-6 h-6" />
-      <span className="sr-only">User Cart</span>
-    </Button>
-  </SheetTrigger>
-  <SheetContent className="bg-gray-100 p-4 w-[400px] sm:w-[540px]">
-    <div className="bg-white p-4 rounded-lg shadow-md">
-      <UserCartWrapper />
-    </div>
-  </SheetContent>
-</Sheet>   */}
-{/*  
 <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
         <Button
           onClick={() => setOpenCartSheet(true)}
@@ -111,28 +85,7 @@ function HeaderRightContent() {
               : []
           }
         />
-      </Sheet> */}
-
-<Sheet open={openCartSheet} onOpenChange={setOpenCartSheet}>
-  <SheetTrigger asChild>
-    <Button
-      onClick={() => setOpenCartSheet(true)}
-      variant="outline"
-      size="icon"
-      className="relative"
-    >
-      <ShoppingCart className="w-6 h-6" />
-      <span className="absolute top-[-5px] right-[2px] font-bold text-sm">
-        {cartItems?.items?.length || 0}
-      </span>
-      <span className="sr-only">User cart</span>
-    </Button>
-  </SheetTrigger>
-  <UserCartWrapper
-    setOpenCartSheet={setOpenCartSheet}
-    cartItems={cartItems?.items || []}
-  />
-</Sheet>
+      </Sheet>
 
       
       <DropdownMenu>
@@ -195,9 +148,7 @@ function ShoppingHeader() {
           <MenuItems />
         </div>
 
-        {/* {
-          isAuthenticated ? <div></div> :null   // it will work if we remove it also
-        } */}
+       
           
         <div className="hidden lg:block">
           <HeaderRightContent />

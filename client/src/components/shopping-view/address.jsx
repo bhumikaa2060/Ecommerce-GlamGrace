@@ -1,244 +1,149 @@
 
-
-
-
-
-
-
-
-
-// import { useState, useEffect } from "react";
-// import CommonForm from "../common/form";
-// import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-// import { addressFormControls } from "@/config";
-// import { useDispatch, useSelector } from "react-redux";
-// import { addNewAddress, fetchAllAddresses } from "@/store/shop/address-slice";
-// import AddressCard from "./address-card";
-
-// const initialAddressFormData = {
-//     address: "",
-//     city: "",
-//     phone: "",
-//     pincode: "",
-//     notes: "",
-// };
-
-// function Address() {
-//     const [formData, setFormData] = useState(initialAddressFormData);
-//     const dispatch = useDispatch();
-//     const { user } = useSelector(state => state.auth);
-//     const { addressList } = useSelector(state => state.shopAddress);
-
-//     // Fetch addresses when component mounts
-//     useEffect(() => {
-//         if (user?.id) {
-//             dispatch(fetchAllAddresses(user.id));
-//         }
-//     }, [dispatch, user]);
-
-//     function handleManageAddress(event) {
-//         event.preventDefault();
-
-//         // Validate and format data
-//         const validatedFormData = {
-//             ...formData,
-//             userId: user?.id,
-//             pincode: formData.pincode.trim().length === 5 ? formData.pincode.trim() : "", // Ensure 5-digit pincode
-//             phone: formData.phone.replace(/\D/g, '').length === 10 ? `+1${formData.phone.replace(/\D/g, '')}` : "", // Format phone with +1 country code
-//         };
-
-//         if (!validatedFormData.userId) {
-//             console.error("User ID is missing");
-//             return;
-//         }
-
-//         if (!Object.values(validatedFormData).every(value => value.trim() !== '')) {
-//             console.error("All fields are required and cannot be empty");
-//             return;
-//         }
-
-//         dispatch(addNewAddress(validatedFormData)).then(data => {
-//             console.log(data);
-//             if (data?.payload?.success) {
-//                 dispatch(fetchAllAddresses(user?.id));
-//                 setFormData(initialAddressFormData);
-//             }
-//         });
-//     }
-
-//     function isFormValid() {
-//         return Object.keys(formData).map(key => formData[key].trim() !== '').every(item => item);
-//     }
-
-//     return (
-//         <div className="space-y-6">
-//             {/* Display Address List */}
-//             <Card>
-//                 <CardHeader>
-//                     <CardTitle>Address List</CardTitle>
-//                 </CardHeader>
-//                 <CardContent>
-//                     {addressList && addressList.length > 0 ? (
-//                         <div className="grid gap-4 md:grid-cols-2">
-//                             {addressList.map((address) => (
-//                                 <AddressCard 
-//                                     key={address._id} 
-//                                     addressInfo={address} 
-//                                 />
-//                             ))}
-//                         </div>
-//                     ) : (
-//                         <p>No addresses found. Please add a new address.</p>
-//                     )}
-//                 </CardContent>
-//             </Card>
-
-//             {/* Add New Address Form */}
-//             <Card>
-//                 <CardHeader>
-//                     <CardTitle>Add New Address</CardTitle>
-//                 </CardHeader>
-
-//                 <CardContent className="space-y-3">
-//                     <CommonForm
-//                         formControls={addressFormControls}
-//                         formData={formData}
-//                         setFormData={setFormData}
-//                         buttonText={"Add"}
-//                         onSubmit={handleManageAddress}
-//                         isBtnDisabled={!isFormValid()}
-//                     />
-//                 </CardContent>
-//             </Card>
-//         </div>
-//     );
-// }
-
-// export default Address;
-
-
-
-
-
-
-
-
-
-
-
-
-
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import CommonForm from "../common/form";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { addressFormControls } from "@/config";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewAddress, fetchAllAddresses } from "@/store/shop/address-slice";
+import {
+  addNewAddress,
+  deleteAddress,
+  editAddress, 
+  fetchAllAddresses,
+} from "@/store/shop/address-slice";
 import AddressCard from "./address-card";
+import { useToast } from "../ui/use-toast";
 
 const initialAddressFormData = {
-    address: "",
-    city: "",
-    phone: "",
-    pincode: "",
-    notes: "",
+  address: "",
+  city: "",
+  phone: "",
+  pincode: "",
+  notes: "",
 };
 
-function Address() {
-    const [formData, setFormData] = useState(initialAddressFormData);
-    const dispatch = useDispatch();
-    const { user } = useSelector(state => state.auth);
-    const { addressList } = useSelector(state => state.shopAddress);
+function Address({ setCurrentSelectedAddress, selectedId }) {
+  const [formData, setFormData] = useState(initialAddressFormData);
+  const [currentEditedId, setCurrentEditedId] = useState(null);
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const { addressList } = useSelector((state) => state.shopAddress);
+  const { toast } = useToast();
 
-    useEffect(() => {
-        console.log("User ID:", user?.id);
-        if (user?.id) {
-            dispatch(fetchAllAddresses(user.id));
-        } else {
-            console.warn("User not logged in, skipping fetchAllAddresses");
-        }
-    }, [dispatch, user]);
+  function handleManageAddress(event) {
+    event.preventDefault();
 
-    function handleManageAddress(event) {
-        event.preventDefault();
-        console.log("Form submission triggered with formData:", formData);
-        console.log("User ID:", user?.id);
+    if (addressList.length >= 3 && currentEditedId === null) {
+      setFormData(initialAddressFormData);
+      toast({
+        title: "You can add max 3 addresses",
+        variant: "destructive",
+      });
 
-        if (!user?.id) {
-            console.error("User ID is missing, cannot submit");
-            return;
-        }
+      return;
+    }
 
-        const validatedFormData = {
+    currentEditedId !== null
+      ? dispatch(
+          editAddress({ 
+            userId: user?.id,
+            addressId: currentEditedId,
+            formData,
+          })
+        ).then((data) => {
+          if (data?.payload?.success) {
+            dispatch(fetchAllAddresses(user?.id));
+            setCurrentEditedId(null);
+            setFormData(initialAddressFormData);
+            toast({
+              title: "Address updated successfully",
+            });
+          }
+        })
+      : dispatch(
+          addNewAddress({
             ...formData,
             userId: user?.id,
-            pincode: formData.pincode.trim().length === 5 ? formData.pincode.trim() : "",
-            phone: formData.phone.replace(/\D/g, '').length === 10 ? `+1${formData.phone.replace(/\D/g, '')}` : "",
-        };
-
-        console.log("Validated Data:", validatedFormData);
-
-        if (!Object.values(validatedFormData).every(value => value.trim() !== '')) {
-            console.error("All fields are required and cannot be empty:", validatedFormData);
-            return;
-        }
-
-        console.log("Dispatching addNewAddress with:", validatedFormData);
-        dispatch(addNewAddress(validatedFormData)).then(data => {
-            console.log("Dispatch response:", data);
-            if (data?.payload?.success) {
-                dispatch(fetchAllAddresses(user?.id));
-                setFormData(initialAddressFormData);
-            }
-        }).catch(error => {
-            console.error("Dispatch failed:", error);
+          })
+        ).then((data) => {
+          if (data?.payload?.success) {
+            dispatch(fetchAllAddresses(user?.id));
+            setFormData(initialAddressFormData);
+            toast({
+              title: "Address added successfully",
+            });
+          }
         });
-    }
+  }
 
-    function isFormValid() {
-        return Object.keys(formData).map(key => formData[key].trim() !== '').every(item => item);
-    }
+  function handleDeleteAddress(getCurrentAddress) {
+    dispatch(
+      deleteAddress({ userId: user?.id, addressId: getCurrentAddress._id })
+    ).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(fetchAllAddresses(user?.id));
+        toast({
+          title: "Address deleted successfully",
+        });
+      }
+    });
+  }
 
-    return (
-        <div className="space-y-6">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Address List</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {addressList && addressList.length > 0 ? (
-                        <div className="grid gap-4 md:grid-cols-2">
-                            {addressList.map((address) => (
-                                <AddressCard 
-                                    key={address._id} 
-                                    addressInfo={address} 
-                                />
-                            ))}
-                        </div>
-                    ) : (
-                        <p>No addresses found. Please add a new address.</p>
-                    )}
-                </CardContent>
-            </Card>
+  function handleEditAddress(getCuurentAddress) {
+    setCurrentEditedId(getCuurentAddress?._id);
+    setFormData({
+      ...formData,
+      address: getCuurentAddress?.address,
+      city: getCuurentAddress?.city,
+      phone: getCuurentAddress?.phone,
+      pincode: getCuurentAddress?.pincode,
+      notes: getCuurentAddress?.notes,
+    });
+  }
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>Add New Address</CardTitle>
-                </CardHeader>
+  function isFormValid() {
+    return Object.keys(formData)
+      .map((key) => formData[key].trim() !== "")
+      .every((item) => item);
+  }
 
-                <CardContent className="space-y-3">
-                    <CommonForm
-                        formControls={addressFormControls}
-                        formData={formData}
-                        setFormData={setFormData}
-                        buttonText={"Add"}
-                        onSubmit={handleManageAddress}
-                        isBtnDisabled={!isFormValid()}
-                    />
-                </CardContent>
-            </Card>
-        </div>
-    );
+  useEffect(() => {
+    dispatch(fetchAllAddresses(user?.id));
+  }, [dispatch]);
+
+  console.log(addressList, "addressList");
+
+  return (
+    <Card>
+      <div className="mb-5 p-3 grid grid-cols-1 sm:grid-cols-2  gap-2">
+        {addressList && addressList.length > 0
+          ? addressList.map((singleAddressItem) => (
+              <AddressCard
+                selectedId={selectedId}
+                handleDeleteAddress={handleDeleteAddress}
+                addressInfo={singleAddressItem}
+                handleEditAddress={handleEditAddress}
+                setCurrentSelectedAddress={setCurrentSelectedAddress}
+              />
+            ))
+          : null}
+      </div>
+      <CardHeader>
+        <CardTitle>
+          {currentEditedId !== null ? "Edit Address" : "Add New Address"}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <CommonForm
+          formControls={addressFormControls}
+          formData={formData}
+          setFormData={setFormData}
+          buttonText={currentEditedId !== null ? "Edit" : "Add"}
+          onSubmit={handleManageAddress}
+          isBtnDisabled={!isFormValid()}
+        />
+      </CardContent>
+    </Card>
+  );
 }
 
 export default Address;

@@ -3,7 +3,7 @@ const User = require('./User');
 
 const AddressSchema = new mongoose.Schema({
 
-    userIde : String,
+    userId : String,
     address : String,
     city : String,
     pincode : String,
