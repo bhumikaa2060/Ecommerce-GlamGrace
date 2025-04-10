@@ -111,6 +111,8 @@
 
 
 
+
+
 import { Routes, Route } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
 import AuthLogin from "./pages/auth/login";
@@ -260,10 +262,3 @@ function App() {
 }
  
 export default App;
-
-
-
-
-
-
- 
