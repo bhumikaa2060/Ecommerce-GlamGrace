@@ -111,8 +111,6 @@
 
 
 
-
-
 import { Routes, Route } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
 import AuthLogin from "./pages/auth/login";
@@ -137,6 +135,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { checkAuth } from "./store/auth-slice";
+import PaypalReturnPage from "./pages/shopping-view/paypal-return";
+import PaymentSuccessPage from "./pages/shopping-view/payment-success";
  
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
@@ -202,6 +202,15 @@ function App() {
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} /> 
           <Route path="search" element={<SearchProducts />} />
+
+
+          <Route path="paypal-return" element={<PaypalReturnPage/>} />   // yo naya add gareko paypal ko lagi
+
+
+          <Route path="payment-success" element={<PaymentSuccessPage/>} />
+          
+
+
         </Route>
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />
@@ -262,3 +271,10 @@ function App() {
 }
  
 export default App;
+
+
+
+
+
+
+ 
